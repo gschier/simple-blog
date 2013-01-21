@@ -17,6 +17,21 @@ requires a master password to do anything serious.
 ``` shell
 npm install simple-blog
 ```
+
+## Enviroment Setup
+
+Your app will need access to a [MongoDb](http://www.mongodb.org/) database
+to save posts. You can do one of the following:
+
+  - Have [MongoDb](http://www.mongodb.org/) installed locally on port 27017
+  - Set environment variable *MONGO_URL* to a remote location (ex. MongoHQ)
+
+You can also set the password you will use to create/edit posts by setting
+the environment variable BLOG_SECRET. The password is only required if
+NODE_ENV is set to *production* and will default to "password" if not
+specified.
+
+
 ## Sample Server
 
 ``` js
