@@ -6,7 +6,6 @@
   "author": "Gregory Schier <greg@schier.co>",
   "repository": "https://github.com/gschier/SimpleBlog",
   "main": "simple",
-  "bin": { "express": "./bin/express" },
   "dependencies": {
     "express": "3.0.5",
     "jade": "*",
