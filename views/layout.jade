@@ -1,0 +1,30 @@
+doctype 5
+html
+  head
+    title #{title ? title + ' |' : ''} #{locals.blogName}
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/stylesheets/simplegrid.css')
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    link(rel='stylesheet', href='/stylesheets/prism.css')
+    link(href='http://fonts.googleapis.com/css?family=Raleway:200,100,400', rel='stylesheet', type='text/css')
+    script(src='/javascripts/jquery.js')
+
+  body
+    div(id='wrapper')
+      header
+        div(class='grid grid-pad')
+          div(class='col-1-1')
+            a(href='/')
+              h1 #{locals.blogName}
+      div(class='grid grid-pad')
+        div(class='col-1-1')
+          block content
+    footer
+      div(class='grid grid-pad')
+        div(class='col-1-1')
+          p(class='dark') © #{new Date().getFullYear()},&nbsp;
+            a(href='https://github.com/gschier/simple-blog', class='subtle no-under') Simple Blog
+
+    script(src='/javascripts/common.js')
+    script(src='/javascripts/prism.js')
+

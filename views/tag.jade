@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  include ./common
+
+  each post in posts
+    - printPost(post);
+  div(class='grid bottom-nav')
+    div(class='col-4-12')
+      small(class='dark')
+        a(href='/', class='no-under subtle')
+          span(class='reverse') &#10148;
+          | &nbsp; back home
+    div(class='col-4-12 text-center')
+      small(class='dark') end of&nbsp;
+        a(href='#', class='no-under subtle uppercase') ##{tag}

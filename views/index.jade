@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  include ./common
+  
+  each post in posts
+    - printPost(post);
+  div(class='grid bottom-nav')
+    small(class='dark')
+      div(class='col-2-12')
+        - if (page > 1)
+          a(href='/?p=#{page-1}', class='no-under') prev
+        - else
+          | &nbsp;
+      //- div(class='col-1-3 text-center') #{page}/#{locals.totalPages}
+      div(class='col-8-12 text-center') page #{page}/#{locals.totalPages}
+      div(class='col-2-12')
+        - if (page < locals.totalPages)
+          a(href='/?p=#{page+1}', class='pull-right no-under') next

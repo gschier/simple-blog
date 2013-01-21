@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  include ./common
+  - printPost(post, true);
+
+  h2 Opinions
+  div(class='grid post-comments')
+    div(class='col-1-1')
+      - if (post.comments && post.comments.length)
+        each comment in post.comments
+          div(class='post-comment shadow')
+            small(title='#{comment.date}', class='pull-right') created #{new Date(comment.date).toDateString()}
+            h3 #{comment.name}&nbsp;
+              span(class='dark') writes:
+            hr
+            p !{comment.body}
+      - else
+        small(class='italic dark') I'd love to hear from you
+      hr
+      - if (post.comments && post.comments.length)
+        h3 Leave Another
+      - else
+        h3 Leave One
+      form(id='comment-form', data-slug='#{post.slug}')
+        div(class='grid')
+          div(class='col-1-2')
+            input(type='text', id='comment-name', placeholder='Your name')
+          div(class='col-1-2')
+            input(type='text', id='comment-email', placeholder='Email (optional)')
+        textarea(id='comment-body', placeholder='Comment text  [js]code block[/js]', rows='3')
+        div(class='marg-tb')
+          button(class='pull-right') Submit Comment
+          a(href='#', id='comment-add-code', class='monospace dark small no-under') { } // Add code block
+
+  div(class='grid bottom-nav')
+    div(class='col-1-1')
+      small(class='dark')
+        a(href='/', class='no-under subtle')
+          span(class='reverse') &#10148;
+          | &nbsp; back home
+
+  script(src='/javascripts/comments.js')

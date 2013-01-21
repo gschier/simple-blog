@@ -1,0 +1,21 @@
+- var printPost = function printPost(post, noLink)
+  article(class='post')
+    h1
+      - if (noLink)
+        | #{post.title}
+      - else
+        a(href='/post/#{post.slug}') #{post.title}
+
+    small(class='monospace')
+      span(class='post-meta') #{new Date(post.date).toDateString()} , tags:
+        - if (post.tags && post.tags.length)
+          span(class='post-tags')
+            - for (var i=0; i<post.tags.length; i++)
+              - var tag = post.tags[i];
+              - if (i)
+                | ,&nbsp;
+              - else
+                | &nbsp;
+              a(href='/tag/#{tag}', class='no-under', title='View all ##{tag} posts') ##{tag}
+
+    | !{post.body}

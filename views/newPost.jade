@@ -1,0 +1,34 @@
+extends layout
+
+block content
+
+  - if (typeof isEditing === 'undefined')
+    - isEditing = false;
+
+  div(id='post-preview')
+    p(class='dark') Preview goes here
+  hr
+  form(id='new-post-form')
+    article
+      h1 New Post
+      input(id='new-post-title', type='text', placeholder='Title', value='#{isEditing ? post.title : ""}')
+      textarea(id='new-post-body', rows='5', placeholder='Some content')
+        - if (isEditing)
+          //- This is the only way to preserve newlines in Jade
+          - var lines = post.md.split('\n');
+          each line in lines
+            //- Encode the encoded
+            - line = line.replace(/\&/g, '&amp;')
+            | #{line+'\n'}
+      div(class='grid')
+        div(class='col-1-2')
+          input(id='new-post-tags', type='text', placeholder='Foo, Bar', value='#{isEditing ? post.tags.join(", ") : ""}')
+        div(class='col-1-2')
+          input(id='new-post-secret', type='password', placeholder='Secret')
+      a(href='#', id='new-post-add-code', class='monospace dark no-under small') Add code block
+      div(class='pull-right marg-tb')
+        button(type='button', id='preview-button', class='secondary') Preview
+        | &nbsp;
+        button(type='submit', id='submit-button', data-edit='#{isEditing ? post.slug : ""}') #{isEditing ? 'Modify' : 'Submit'}
+
+  script(src='/javascripts/newPost.js')
