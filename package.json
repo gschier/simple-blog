@@ -2,7 +2,7 @@
   "name": "simple-blog",
   "description": "A simple, session-free and extendable blogging platform.",
   "keywords": [ "blog", "session", "fast" ],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Gregory Schier <greg@schier.co>",
   "repository": "https://github.com/gschier/SimpleBlog",
   "main": "simple",

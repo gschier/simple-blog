@@ -9,6 +9,7 @@ var app = module.exports.app = express();
 var config = {
   name: 'Simple Blog',
   publicPath: '/public',
+  secret: process.env.BLOG_SECRET || 'password',
   rootDir: __dirname
 };
 
@@ -139,7 +140,7 @@ var setup = module.exports.setup = function(userConfig) {
   app.post('/new', function(req, res) {
     if (
       process.env.NODE_ENV === 'production' &&
-      req.body.secret !== process.env.BLOG_SECRET
+      req.body.secret !== config.secret
     ) {
       res.statusCode = 400;
       res.end();
@@ -161,7 +162,7 @@ var setup = module.exports.setup = function(userConfig) {
   app.put('/edit/:slug', function(req, res) {
     if (
       process.env.NODE_ENV === 'production' &&
-      req.body.secret !== process.env.BLOG_SECRET
+      req.body.secret !== config.secret
     ) {
       res.statusCode = 400;
       res.end();
