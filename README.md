@@ -22,11 +22,11 @@ simple.setup({
   // The name of your blog
   name: 'My Blog',
 
-  // Path to public directory
-  publicPath: '/public',
-
   // Path to the root of your app
-  rootDir: __dirname
+  rootDir: __dirname,
+
+  // Path to public directory
+  publicPath: '/public'
 });
 
 // Start Simple Blog

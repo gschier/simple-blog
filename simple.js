@@ -12,10 +12,16 @@ var config = {
   rootDir: __dirname
 };
 
-module.exports.setup = function(userConfig) {
-  for (var key in userConfig) {
-    config[key] = userConfig[key];
+var isSetup = false;
+
+var setup = module.exports.setup = function(userConfig) {
+  if (userConfig) {
+    for (var key in userConfig) {
+      config[key] = userConfig[key];
+    }
   }
+
+  isSetup = true;
 
   app.configure(function() {
     app.set('port', process.env.PORT || 5000);
@@ -76,11 +82,6 @@ module.exports.setup = function(userConfig) {
           page: parseInt(req.query.page, 10) || 1
         });
       });
-  });
-
-  // ABOUT
-  app.get('/about', function(req, res) {
-    res.render('about', { title: 'About' });
   });
 
   // NEW POST FORM
@@ -211,6 +212,7 @@ module.exports.setup = function(userConfig) {
 
 
 module.exports.start = function() {
+  if (!isSetup) { setup(); }
   http.createServer(app).listen(app.get('port'), function() {
     console.log('Started '+config.name+' on port ' + app.get('port'));
     console.log('Config: ', config);
