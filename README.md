@@ -1,15 +1,17 @@
 SimpleBlog
 ==========
 
-A *simple* blogging platform built on Node.js that doesn't need user
-sessions. Sessions require database access and therefore increase
-page load times, so we threw them out altogether. 
+A *simple* blogging platform built on [Node.js](http://nodejs.org/)
+and [Express.js](http://expressjs.com/) that uses
+[Markdown](http://daringfireball.net/projects/markdown/syntax) syntax
+for posting.
 
-Since there are no sessions, there is no *admin* user. **Simple** makes
+To speed things up, Simple doesn't make use of user sessions. 
+Since there are no sessions, there is no *admin* user. Simple makes
 all admin pages (new post, edit, etc) accessible to the public but
 requires a master password to do anything serious.
 
-To see Simple in action, you can check out [my blog](http://schier.co)
+**Demo:** [My blog](http://schier.co)
 
 ## Installation
 ``` shell
