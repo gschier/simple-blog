@@ -9,6 +9,8 @@ Since there are no sessions, there is no *admin* user. **Simple** makes
 all admin pages (new post, edit, etc) accessible to the public but
 requires a master password to do anything serious.
 
+To see Simple in action, you can check out [my blog](http://schier.co)
+
 ## Installation
 ``` shell
 npm install simple-blog
