@@ -8,7 +8,7 @@ var app = module.exports.app = express();
 
 var config = {
   name: 'Simple Blog',
-  publicDir: __dirname+'/public',
+  publicPath: '/public',
   rootDir: __dirname
 };
 
@@ -30,12 +30,12 @@ module.exports.setup = function(userConfig) {
       else { next(); }
     });
     app.use(express.compress());
-    app.use(express.favicon(config.publicDir+'/favicon.ico'));
+    app.use(express.favicon(config.rootDir+config.publicPath+'/favicon.ico'));
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(require('stylus').middleware(config.publicDir));
-    app.use(express['static'](config.publicDir));
+    app.use(require('stylus').middleware(config.rootDir+config.publicPath));
+    app.use(express['static'](config.rootDir+config.publicPath));
     app.use( function(req, res, next) {
       app.locals.host = req.host;
       app.locals.blogName = config.name;
