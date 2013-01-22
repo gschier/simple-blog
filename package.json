@@ -4,7 +4,7 @@
   "keywords": [ "blog", "session", "fast" ],
   "version": "1.0.5",
   "author": "Gregory Schier <greg@schier.co>",
-  "repository": "https://github.com/gschier/SimpleBlog",
+  "repository": "https://github.com/gschier/simple-blog",
   "main": "simple",
   "dependencies": {
     "express": "3.0.5",
