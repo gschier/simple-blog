@@ -65,7 +65,7 @@ var simple = require('simple-blog');
 
 simple.setup({
   // The name of your blog
-  name: 'My Blog',
+  name: 'Gregory Schier',
 
   // Path to the root of your app
   rootDir: __dirname,
@@ -73,6 +73,11 @@ simple.setup({
   // Path to Express.js directories
   publicPath: '/public',
   viewPath: '/views'
+});
+
+// Add custom routes the same as Express.js
+simple.app.get('/about', function(req, res) {
+  res.render('about', { title: 'About' });
 });
 
 // Start Simple Blog
