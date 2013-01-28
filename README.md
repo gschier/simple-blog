@@ -51,8 +51,8 @@ the following:
 
 ```
 $ cd myApp/
-$ cp -r node_modules/simple-blog/public/ ./
-$ cp -r node_modules/simple-blog/views/ ./
+$ cp -r node_modules/simple-blog/public ./
+$ cp -r node_modules/simple-blog/views ./
 ```
 
 ### Point Simple To The Layout Files
