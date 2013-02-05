@@ -2,7 +2,7 @@
   "name": "simple-blog",
   "description": "A simple, session-free and extendable blogging platform.",
   "keywords": [ "blog", "session", "fast" ],
-  "version": "1.0.6",
+  "version": "1.1.0",
   "author": "Gregory Schier <greg@schier.co>",
   "repository": "https://github.com/gschier/simple-blog",
   "main": "simple",
@@ -10,6 +10,7 @@
     "express": "3.0.5",
     "jade": "*",
     "stylus": "*",
+    "rss": "*",
     "node-markdown": "*",
     "mongoose": ">=3.0.0"
   },
