@@ -63,19 +63,37 @@ function in your main app script.
 ``` js
 var simple = require('simple-blog');
 
+// ALL PARAMETERS ARE OPTIONAL
 simple.setup({
-  // The name of your blog
-  name: 'Gregory Schier',
+  name: 'Test Blog', // Blog Title
 
   // Path to the root of your app
   rootDir: __dirname,
 
   // Path to Express.js directories
   publicPath: '/public',
-  viewPath: '/views'
+  viewPath: '/views',
+
+  // Redirect www.domain... to domain...
+  redirectWWW: true,
+
+  /*************************************************
+   * The rest is used for the RSS feed
+   */
+
+  // Disable RSS
+  // rss: false,
+
+  // Enable RSS at /rss.xml (defaults to disabled)
+  rss: {
+    description: 'A test blog to showcase simple-blog',
+    author: 'Gregory Schier',
+    img: '/favicon.ico', // Feed image
+    limit: 10 // Feed item cutoff
+  }
 });
 
-// Add custom routes the same as Express.js
+// Add custom routes the same as you would with Express.js
 simple.app.get('/about', function(req, res) {
   res.render('about', { title: 'About' });
 });

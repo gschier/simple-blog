@@ -4,7 +4,10 @@ body {
   background-color: #fff;
   color: #333;
   font-size: 20px;
-  text-shadow: 0 0 0.7em rgba(0,0,0,0.1);
+}
+body,
+html {
+  height: 100%;
 }
 h1,
 h2,
@@ -30,7 +33,10 @@ h6 {
 /** LAYOUT HEADER **/
 header {
   font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
-  margin: 0.5em 0 1em 0;
+  margin: 0 0 1em 0;
+}
+.header-wrapper {
+  position: relative;
 }
 section {
   margin: 0.5em 0 1.5em 0;
@@ -67,10 +73,13 @@ header p {
 /** LAYOUT FOOTER **/
 footer {
   text-align: center;
-  border-top: 1px solid #bbb;
-  background-color: #ccc;
+  border-top: 1px solid #ccc;
+  background-color: #eee;
   font-size: 0.7em;
   height: 100px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 /** BASE STYLES **/
 h1 {
@@ -219,8 +228,19 @@ a:active > img {
   opacity: 0.8;
 }
 /** LAYOUT **/
-.wrapper {
-  padding-bottom: 50px;
+#wrapper {
+  min-height: 100%;
+  position: relative;
+}
+#main-content {
+  height: 100%;
+  padding-bottom: 100px;
+}
+.rss-link {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  color: #bbb;
 }
 /** HELPERS **/
 .inline-block {
