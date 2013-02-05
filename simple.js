@@ -239,12 +239,12 @@ var setup = module.exports.setup = function(userConfig) {
           var baseUrl = app.locals.baseUrl;
 
           var feed = new RSS({
-            title: config.blogName,
+            title: config.name,
             description: config.rss.description || '',
             feed_url: baseUrl+'/rss.xml',
             site_url: baseUrl,
             image_url: baseUrl+(config.rss.img || '/favicon.ico'),
-            author: config.rss.author || config.blogName
+            author: config.rss.author || config.name
           });
 
           for (var i=0; i<posts.length; i++) {
