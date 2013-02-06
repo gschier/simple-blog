@@ -19,3 +19,12 @@
               a(href='/tag/#{tag}', class='no-under', title='View all ##{tag} posts') ##{tag}
 
     | !{post.body}
+
+- var printComment = function(comment) {
+  div(class='post-comment shadow')
+    small(title='#{comment.date}', class='pull-right') created #{new Date(comment.date).toDateString()}
+    h3 #{comment.name}&nbsp;
+      span(class='dark') writes:
+    hr
+    p !{comment.body}
+- }

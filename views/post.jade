@@ -9,12 +9,7 @@ block content
     div(class='col-1-1')
       - if (post.comments && post.comments.length)
         each comment in post.comments
-          div(class='post-comment shadow')
-            small(title='#{comment.date}', class='pull-right') created #{new Date(comment.date).toDateString()}
-            h3 #{comment.name}&nbsp;
-              span(class='dark') writes:
-            hr
-            p !{comment.body}
+          - printComment(comment);
       - else
         small(class='italic dark') I'd love to hear from you
       hr

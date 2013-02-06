@@ -3,7 +3,7 @@ var md = require('node-markdown').Markdown;
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/blog');
 
-var post = new mongoose.Schema({
+var schema = new mongoose.Schema({
   title: { type: String, required: true, set: function(title) {
     // Generate slug from title
     str = title.toString().replace(/[\\&]/g, 'and').replace(/^\s+|\s+$/g, '').toLowerCase();
@@ -41,8 +41,9 @@ var post = new mongoose.Schema({
     date: { type: Date, 'default': Date.now },
     email: { type: String }
   }],
+  numComments: { type: Number, 'default': 0 },
   slug: { type: String, required: true },
-  author: { type: String, 'default': 'Gregory Schier' },
+  author: { type: String, 'default': '' },
   body: { type: String, required: true},
   md: { type: String, required: true, set: function(markdown) {
     this.body = md(markdown);
@@ -53,6 +54,13 @@ var post = new mongoose.Schema({
   tags: [ String ]
 });
 
-post.index({ slug: 1 }, { unique: true });
+schema.pre('save', function(next) {
+  if (this.isSelected('comments')) {
+    this.numComments = this.comments.length;
+  }
+  next();
+});
 
-var Post = module.exports = mongoose.model('Post', post, 'posts');
+schema.index({ slug: 1 }, { unique: true });
+
+var Post = module.exports = mongoose.model('Post', schema, 'posts');

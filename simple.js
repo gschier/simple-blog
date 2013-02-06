@@ -97,6 +97,21 @@ var setup = module.exports.setup = function(userConfig) {
       });
   });
 
+  // RECENT COMMENTS
+  app.get('/comments', function(req, res) {
+    Post
+      .where('numComments').gt(0)
+      .sort({ 'comments.date': 'desc' })
+      .limit(10)
+      .exec(function(err, posts) {
+        if (err) { res.statusCode(500); res.end(); }
+        res.render('comments', {
+          title: 'Comments',
+          posts: posts
+        });
+      });
+  });
+
   // NEW POST FORM
   app.get('/new', function(req, res) {
     res.render('newPost', { title: 'New Post' });
@@ -263,7 +278,6 @@ var setup = module.exports.setup = function(userConfig) {
     });
   }
 };
-
 
 module.exports.start = function() {
   if (!isSetup) { setup(); }

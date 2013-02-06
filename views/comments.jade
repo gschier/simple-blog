@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  include ./common
+  
+  each post in posts
+    article
+      h1
+        a(href='/post/#{post.slug}') #{post.title}
+      small(class='monospace') #{post.numComments || 0} comments
+    h2 Opinions
+    div(class='grid post-comments')
+      div(class='col-1-1')
+        each comment in post.comments
+          - printComment(comment);

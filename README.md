@@ -114,10 +114,11 @@ New post      /new
 edit post     /edit/posts/<POST SLUG>
 
 // General stuff
-Home          /
-Pagination    /?p=1
-View Post     /posts/<POST SLUG>
-View Tag      /tag/<TAG>
+Home             /
+Pagination       /?p=1
+View Post        /posts/<POST SLUG>
+View Tag         /tag/<TAG>
+Recent Comments  /comments
 ```
 
 ## Screenshots
