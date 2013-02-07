@@ -67,6 +67,9 @@ var simple = require('simple-blog');
 simple.setup({
   name: 'Test Blog', // Blog Title
 
+  // How to generate slugs (defaults to "title")
+  slugType: 'base36', // options: "title" | "base36"
+
   // Path to the root of your app
   rootDir: __dirname,
 
