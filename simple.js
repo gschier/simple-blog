@@ -11,6 +11,7 @@ var config = {
   name: 'Simple Blog',
   publicPath: '/public',
   viewPath: '/views',
+  slugType: 'title',
   rootDir: __dirname,
   redirectWWW: true,
   secret: process.env.BLOG_SECRET || 'password',
@@ -172,15 +173,17 @@ var setup = module.exports.setup = function(userConfig) {
       res.statusCode = 400;
       res.end();
     } else {
-      new Post(req.body).save( function(err, data) {
-        if (err) {
-          res.statusCode = 400;
-          res.json(err);
-          console.log('Error submitting post: ', err);
-        } else {
-          app.locals({ totalPosts: undefined });
-          res.json(data);
-        }
+      new Post(req.body)
+        .setSlugType(config.slugType)
+        .save(function(err, data) {
+          if (err) {
+            res.statusCode = 400;
+            res.json(err);
+            console.log('Error submitting post: ', err);
+          } else {
+            app.locals({ totalPosts: undefined });
+            res.json(data);
+          }
       });
     }
   });

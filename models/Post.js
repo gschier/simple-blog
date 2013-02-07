@@ -1,29 +1,14 @@
 var mongoose = require('mongoose');
 var md = require('node-markdown').Markdown;
+var slug = require('slug');
+var bases = require('bases');
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/blog');
 
 var schema = new mongoose.Schema({
-  title: { type: String, required: true, set: function(title) {
-    // Generate slug from title
-    str = title.toString().replace(/[\\&]/g, 'and').replace(/^\s+|\s+$/g, '').toLowerCase();
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to   = "aaaaeeeeiiiioooouuuunc------";
-    for (var i=0, l=from.length ; i<l ; i++) {
-      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 \-]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
-
-    this.slug = str;
-
-    // Return original title unchanged
-    return title;
-  }},
+  title: { type: String, required: true, trim: true },
   comments: [{
-    name: { type: String, required: true },
+    name: { type: String, required: true, trim: true },
     body: { type: String, required: true, set: function(comment) {
       comment = comment.replace(/(<([^>]+)>)/ig, ''); // Strip HTML
       comment = comment.replace(/\n/g, '<br>'); // nl2br
@@ -42,7 +27,7 @@ var schema = new mongoose.Schema({
     email: { type: String }
   }],
   numComments: { type: Number, 'default': 0 },
-  slug: { type: String, required: true },
+  slug: { type: String },
   author: { type: String, 'default': '' },
   body: { type: String, required: true},
   md: { type: String, required: true, set: function(markdown) {
@@ -62,5 +47,26 @@ schema.pre('save', function(next) {
 });
 
 schema.index({ slug: 1 }, { unique: true });
+
+schema.methods = {
+  setSlugType: function(type) {
+    this.slugType = type;
+    return this; // For method chaining
+  },
+  setSlug: function() {
+    if (this.slugType === 'base36') {
+      var timestamp = parseInt(this.date.getTime()/1000, 10);
+      this.slug = bases.toBase(timestamp, 36);
+    } else {
+      // Default to regular title slug
+      this.slug = slug(this.title);
+    }
+  }
+};
+
+schema.pre('save', function(next) {
+  if (this.isNew) { this.setSlug(); }
+  next();
+});
 
 var Post = module.exports = mongoose.model('Post', schema, 'posts');
