@@ -204,6 +204,7 @@ var setup = module.exports.setup = function(userConfig) {
           if (err) { res.statusCode = 404; res.end(); return; }
           post.md = req.body.md;
           post.tags = req.body.tags;
+          post.title = req.body.title;
           post.save( function(err, newPost) {
             if (err) { res.statusCode = 500; res.end(); return console.log(err); }
             res.json(newPost);
