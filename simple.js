@@ -271,7 +271,7 @@ var setup = module.exports.setup = function(userConfig) {
             feed.item({
               title:  post.title,
               description: post.body,
-              url: baseUrl+'/posts/'+post.slug,
+              url: baseUrl+'/post/'+post.slug,
               date: post.date
             });
           }

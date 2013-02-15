@@ -27,7 +27,7 @@ var schema = new mongoose.Schema({
     email: { type: String }
   }],
   numComments: { type: Number, 'default': 0 },
-  slug: { type: String },
+  slug: { type: String, lowercase: true },
   author: { type: String, 'default': '' },
   body: { type: String, required: true},
   md: { type: String, required: true, set: function(markdown) {
