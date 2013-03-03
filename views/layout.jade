@@ -14,7 +14,6 @@ html
       header
         div(class='grid grid-pad')
           div(class='col-1-1 header-wrapper')
-            a(href='/rss.xml', class='rss-link') rss
 
             a(href='/')
               h1 #{locals.blogName}
@@ -29,6 +28,8 @@ html
           div(class='col-1-1')
             p(class='dark') © #{new Date().getFullYear()},&nbsp;
               a(href='https://github.com/gschier/simple-blog', class='subtle no-under') Simple Blog
+              | &nbsp;|&nbsp;
+              a(href='/rss.xml', class='subtle no-under') Rss Feed
 
     script(src='/javascripts/common.js')
     script(src='/javascripts/prism.js')

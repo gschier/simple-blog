@@ -16,7 +16,7 @@ $( function() {
   $form.delegate('input[type="text"], textarea', 'keydown', function(e) {
     $(this).removeClass('error');
   });
-  
+
   $addCode.on('click', function(e) {
     e.preventDefault();
     $body.val($body.val()+'\n\n<pre><code class="language-javascript">\n\n</code></pre>\n\n').focus();

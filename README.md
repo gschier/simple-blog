@@ -73,6 +73,9 @@ simple.setup({
   // Path to the root of your app
   rootDir: __dirname,
 
+  // Set amount of posts per page (defaults to 3)
+  pageSize: 5,
+
   // Path to Express.js directories
   publicPath: '/public',
   viewPath: '/views',
@@ -122,6 +125,7 @@ Pagination       /?p=1
 View Post        /posts/<POST SLUG>
 View Tag         /tag/<TAG>
 Recent Comments  /comments
+JSON Dump Posts  /dump
 ```
 
 ## Screenshots

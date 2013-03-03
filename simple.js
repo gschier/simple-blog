@@ -14,6 +14,7 @@ var config = {
   slugType: 'title',
   rootDir: __dirname,
   redirectWWW: true,
+  pageSize: 3,
   secret: process.env.BLOG_SECRET || 'password',
   rss: false
 };
@@ -31,7 +32,7 @@ var setup = module.exports.setup = function(userConfig) {
 
   app.configure(function() {
     app.set('port', process.env.PORT || 5000);
-    app.set('postsPerPage', 3);
+    app.set('postsPerPage', config.pageSize);
     app.set('prod', process.env.NODE_ENV === 'production');
     app.set('views', config.rootDir+config.viewPath);
     app.set('view engine', 'jade');
@@ -70,6 +71,11 @@ var setup = module.exports.setup = function(userConfig) {
       }
     });
     app.use(app.router);
+    app.use(function(req, res) {
+      res.status(404).render('error', {
+        title: 'Not Found'
+      });
+    });
   });
 
   app.configure('development', function(){
@@ -78,7 +84,7 @@ var setup = module.exports.setup = function(userConfig) {
 
   // HOME PAGE
   app.get('/', function(req, res) {
-    var limit = 3;
+    var limit = config.pageSize;
 
     // ?p=1 OR ?page=1
     req.query.page = req.query.p || req.query.page;
@@ -95,6 +101,17 @@ var setup = module.exports.setup = function(userConfig) {
           posts: posts,
           page: parseInt(req.query.page, 10) || 1
         });
+      });
+  });
+
+  // DUMP ALL POSTS AS JSON TO TAR.GZ
+  app.get('/dump', function(req, res) {
+    Post
+      .where('published', true)
+      .sort({ 'comments.date': 'desc' })
+      .exec(function(err, posts) {
+        if (err) { res.statusCode(500); res.end(); }
+        res.json(posts);
       });
   });
 
