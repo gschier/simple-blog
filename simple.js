@@ -136,11 +136,11 @@ var setup = module.exports.setup = function(userConfig) {
   });
 
   // EDIT A POST
-  app.get('/edit/post/:slug', function(req, res) {
+  app.get('/edit/post/:slug', function(req, res, next) {
     Post
       .where('slug', req.params.slug)
       .findOne( function(err, post) {
-        if (err) { res.statusCode = 404; res.end(); }
+        if (err || !post) { return next(); }
         res.render('newPost', { title: 'Edit Post', isEditing: true, post: post });
       });
   });
@@ -153,12 +153,12 @@ var setup = module.exports.setup = function(userConfig) {
   });
 
   // VIEW POST
-  app.get('/post/:slug', function(req, res) {
+  app.get('/post/:slug', function(req, res, next) {
     Post
       .where('slug', req.params.slug)
       .where('published', true)
       .findOne( function(err, post) {
-        if (err) { res.statusCode = 404; res.end(); }
+        if (err || !post) { return next(); }
         res.render('post', { title: post.title, post: post });
       });
   });
@@ -218,7 +218,7 @@ var setup = module.exports.setup = function(userConfig) {
         .where('slug', req.params.slug)
         .where('published', true)
         .findOne( function(err, post) {
-          if (err) { res.statusCode = 404; res.end(); return; }
+          if (err || !post) { res.statusCode = 404; res.end(); return; }
           post.md = req.body.md;
           post.tags = req.body.tags;
           post.title = req.body.title;
@@ -245,7 +245,7 @@ var setup = module.exports.setup = function(userConfig) {
       .where('slug', req.params.slug)
       .where('published', true)
       .findOne( function(err, post) {
-        if (err) { res.statusCode = 404; res.end(); }
+        if (err || !post) { res.statusCode = 404; res.end(); return; }
         post.comments.push(req.body);
         post.save( function(err, data) {
           if (err) {
