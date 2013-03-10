@@ -117,12 +117,12 @@ direct url. Here is what you need to know:
 ```
 // Admin stuff
 New post      /new
-edit post     /edit/posts/<POST SLUG>
+edit post     /edit/post/<POST SLUG>
 
 // General stuff
 Home             /
 Pagination       /?p=1
-View Post        /posts/<POST SLUG>
+View Post        /post/<POST SLUG>
 View Tag         /tag/<TAG>
 Recent Comments  /comments
 JSON Dump Posts  /dump
