@@ -11,6 +11,7 @@ var config = {
   name: 'Simple Blog',
   publicPath: '/public',
   viewPath: '/views',
+  dumpPath: false,
   slugType: 'title',
   rootDir: __dirname,
   redirectWWW: true,
@@ -105,15 +106,17 @@ var setup = module.exports.setup = function(userConfig) {
   });
 
   // DUMP ALL POSTS AS JSON TO TAR.GZ
-  app.get('/dump', function(req, res) {
-    Post
-      .where('published', true)
-      .sort({ 'comments.date': 'desc' })
-      .exec(function(err, posts) {
-        if (err) { res.statusCode(500); res.end(); }
-        res.json(posts);
-      });
-  });
+  if (config.dumpPath) {
+    app.get(config.dumpPath, function(req, res) {
+      Post
+        .where('published', true)
+        .sort({ 'created': 'desc' })
+        .exec(function(err, posts) {
+          if (err) { res.statusCode(500); res.end(); }
+          res.json(posts);
+        });
+    });
+  }
 
   // RECENT COMMENTS
   app.get('/comments', function(req, res) {

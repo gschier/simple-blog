@@ -6,7 +6,7 @@ and [Express.js](http://expressjs.com/) that uses
 [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax
 for posting.
 
-To speed things up, Simple doesn't make use of user sessions. 
+To speed things up, Simple doesn't make use of user sessions.
 Since there are no sessions, there is no *admin* user. Simple makes
 all admin pages (new post, edit, etc) accessible to the public but
 requires a master password to do anything serious.
@@ -72,6 +72,10 @@ simple.setup({
 
   // Path to the root of your app
   rootDir: __dirname,
+
+  // Specify a URL that will dump all data
+  //   Leave out or set to FALSE to disable
+  dumpPath: '/dump',
 
   // Set amount of posts per page (defaults to 3)
   pageSize: 5,
