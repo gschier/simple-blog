@@ -14,7 +14,12 @@ var schema = new mongoose.Schema({
       comment = comment.replace(/\n/g, '<br>'); // nl2br
       comment = comment.replace(/\[js\](.?)*\[\/js\]/g, function(match) {
         // Unreplace <br> tags in code blocks
-        return match.replace(/(<br>)/g, '\n');
+        match = match.replace(/(<br>)/g, '\n');
+
+        // Encode angle brackets
+        match = match.replace(/</g, '&lt;');
+        match = match.replace(/>/g, '&gt;');
+        return match;
       });
 
       // Convert code blocks to Prism.js format
