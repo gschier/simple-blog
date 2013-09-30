@@ -105,6 +105,19 @@ var setup = module.exports.setup = function(userConfig) {
       });
   });
 
+  app.get('/drafts', function(req, res) {
+    Post
+      .where('published', false)
+      .sort({ date: 'desc' })
+      .exec(function(err, posts) {
+        if (err) { res.statusCode(500); res.end(); }
+        res.render('drafts', {
+          title: 'Drafts',
+          posts: posts
+        });
+      });
+  });
+
   // DUMP ALL POSTS AS JSON TO TAR.GZ
   if (config.dumpPath) {
     app.get(config.dumpPath, function(req, res) {
@@ -135,7 +148,7 @@ var setup = module.exports.setup = function(userConfig) {
 
   // NEW POST FORM
   app.get('/new', function(req, res) {
-    res.render('newPost', { title: 'New Post' });
+    res.render('newPost', { title: 'New Post', post: false });
   });
 
   // EDIT A POST
@@ -159,7 +172,6 @@ var setup = module.exports.setup = function(userConfig) {
   app.get('/post/:slug', function(req, res, next) {
     Post
       .where('slug', req.params.slug)
-      .where('published', true)
       .findOne( function(err, post) {
         if (err || !post) { return next(); }
         res.render('post', { title: post.title, post: post });
@@ -219,12 +231,18 @@ var setup = module.exports.setup = function(userConfig) {
     } else {
       Post
         .where('slug', req.params.slug)
-        .where('published', true)
         .findOne( function(err, post) {
           if (err || !post) { res.statusCode = 404; res.end(); return; }
           post.md = req.body.md;
           post.tags = req.body.tags;
           post.title = req.body.title;
+
+          // SET SLUG IF WASN'T PUBLISHED
+          if (!post.published || !req.body.published) {
+            post.setSlug();
+          }
+          post.published = req.body.published;
+
           post.save( function(err, newPost) {
             if (err) { res.statusCode = 500; res.end(); return console.log(err); }
             res.json(newPost);

@@ -27,6 +27,12 @@ block content
           input(id='new-post-secret', type='password', placeholder='Secret')
       a(href='#', id='new-post-add-code', class='monospace dark no-under small') Add code block
       div(class='pull-right marg-tb')
+        label(class='pointer') published:&nbsp;
+          - if (post && post.published)
+            input(type='checkbox', id='new-post-published', checked)
+          - else
+            input(type='checkbox', id='new-post-published')
+          | &nbsp;
         button(type='button', id='preview-button', class='secondary') Preview
         | &nbsp;
         button(type='submit', id='submit-button', data-edit='#{isEditing ? post.slug : ""}') #{isEditing ? 'Modify' : 'Submit'}

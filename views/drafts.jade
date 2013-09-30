@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  include ./common
+  div(class='grid')
+    div(class='col-2-12')
+      h1 Drafts
+
+  each post in posts
+    - printPost(post);

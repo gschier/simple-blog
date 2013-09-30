@@ -128,6 +128,7 @@ Home             /
 Pagination       /?p=1
 View Post        /post/<POST SLUG>
 View Tag         /tag/<TAG>
+Drafts           /drafts
 Recent Comments  /comments
 JSON Dump Posts  /dump
 ```

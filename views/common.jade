@@ -1,6 +1,9 @@
 - var printPost = function printPost(post, noLink)
   article(class='post')
     h1
+      - if (!post.published)
+        small
+          a(href='/edit/post/#{post.slug}') (draft)&nbsp;
       - if (noLink)
         | #{post.title}
       - else

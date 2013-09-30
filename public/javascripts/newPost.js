@@ -3,6 +3,7 @@ $( function() {
   var $form = $('#new-post-form');
   var $body = $('#new-post-body');
   var $title = $('#new-post-title');
+  var $published = $('#new-post-published');
   var $tags = $('#new-post-tags');
   var $addCode = $('#new-post-add-code');
   var $previewContainer = $('#post-preview');
@@ -39,6 +40,7 @@ $( function() {
 
   var submitPost = function(isPreview) {
     var title = $title.val();
+    var published = $published.is(':checked');
     var body = $body.val();
     var tags = [ ];
 
@@ -68,13 +70,14 @@ $( function() {
         url: url,
         type: (editing && !isPreview) ? 'PUT' : 'POST',
         dataType: isPreview ? 'html' : 'json',
-        data: {
+        contentType: 'application/json',
+        data: JSON.stringify({
           title: title,
           md: body,
           tags: tags,
-          published: true,
+          published: published,
           secret: $('#new-post-secret').val()
-        },
+        }),
         success: function(data, textStatus, jqXHR) {
           if (isPreview) {
             showPreview(data);
