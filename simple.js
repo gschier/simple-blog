@@ -52,7 +52,7 @@ var setup = module.exports.setup = function(userConfig) {
     app.use(express.methodOverride());
     app.use(require('stylus').middleware(config.rootDir+config.publicPath));
     app.use(express['static'](config.rootDir+config.publicPath));
-    app.use( function(req, res, next) {
+    app.use(function(req, res, next) {
       var protocol = req.connection.encrypted ? 'https://' : 'http://';
 
       app.locals.host = req.headers.host;
@@ -60,6 +60,7 @@ var setup = module.exports.setup = function(userConfig) {
       app.locals.baseUrl = protocol+app.locals.host;
       app.locals.rssURL = app.locals.baseUrl+'/rss.xml';
       app.locals.blogName = config.name;
+      app.locals.currentPath = req.originalUrl;
 
       if (app.locals.totalPosts === undefined) {
         Post.where('published', true).count().exec( function(err, data) {
