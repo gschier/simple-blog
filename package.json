@@ -1,22 +1,24 @@
 {
   "name": "simple-blog",
   "description": "A simple, session-free and extendable blogging platform.",
-  "keywords": [ "blog", "session", "fast" ],
-  "version": "1.4.1",
+  "keywords": [
+    "blog",
+    "session",
+    "fast"
+  ],
+  "version": "1.5.0",
   "author": "Gregory Schier <greg@schier.co>",
   "repository": "https://github.com/gschier/simple-blog",
   "main": "simple",
   "dependencies": {
     "express": "3.0.5",
-    "jade": "*",
-    "stylus": "*",
-    "rss": "*",
-    "node-markdown": "*",
+    "jade": "~1.1.5",
+    "stylus": "~0.42.2",
+    "rss": "~0.3.2",
+    "node-markdown": "~0.1.1",
     "mongoose": ">=3.0.0",
-    "slug": "*",
-    "bases": "*"
-  },
-  "engines": {
-    "node": "0.8.x"
+    "slug": "~0.4.0",
+    "bases": "~0.2.0",
+    "sendwithus": "~2.0.0"
   }
 }

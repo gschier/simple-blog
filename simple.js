@@ -1,9 +1,10 @@
-var express = require('express');
-var http    = require('http');
-var path    = require('path');
-var util    = require('util');
-var RSS     = require('rss');
-var Post    = require('./models/Post');
+var express      = require('express');
+var http         = require('http');
+var path         = require('path');
+var util         = require('util');
+var RSS          = require('rss');
+var Post         = require('./models/Post');
+var EventEmitter = require('events').EventEmitter;
 
 var app = module.exports.app = express();
 
@@ -35,30 +36,30 @@ var setup = module.exports.setup = function(userConfig) {
     app.set('port', process.env.PORT || 5000);
     app.set('postsPerPage', config.pageSize);
     app.set('prod', process.env.NODE_ENV === 'production');
-    app.set('views', config.rootDir+config.viewPath);
+    app.set('views', config.rootDir + config.viewPath);
     app.set('view engine', 'jade');
     if (config.redirectWWW) {
       app.use(function(req, res, next) {
         if (req.headers.host.match(/^www/) !== null ) {
-          res.redirect(301, 'http://'+req.headers.host.replace(/^www\./, '')+req.url);
+          res.redirect(301, 'http://' + req.headers.host.replace(/^www\./, '') + req.url);
         }
         else { next(); }
       });
     }
     app.use(express.compress());
-    app.use(express.favicon(config.rootDir+config.publicPath+'/favicon.ico'));
+    app.use(express.favicon(config.rootDir + config.publicPath + '/favicon.ico'));
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(require('stylus').middleware(config.rootDir+config.publicPath));
-    app.use(express['static'](config.rootDir+config.publicPath));
+    app.use(require('stylus').middleware(config.rootDir + config.publicPath));
+    app.use(express['static'](config.rootDir + config.publicPath));
     app.use(function(req, res, next) {
       var protocol = req.connection.encrypted ? 'https://' : 'http://';
 
       app.locals.host = req.headers.host;
       app.locals.rssEnabled = !!config.rss;
-      app.locals.baseUrl = protocol+app.locals.host;
-      app.locals.rssURL = app.locals.baseUrl+'/rss.xml';
+      app.locals.baseUrl = protocol + app.locals.host;
+      app.locals.rssURL = app.locals.baseUrl + '/rss.xml';
       app.locals.blogName = config.name;
       app.locals.currentPath = req.originalUrl;
 
@@ -95,7 +96,7 @@ var setup = module.exports.setup = function(userConfig) {
       .where('published', true)
       .sort({ date: 'desc' })
       .limit(limit)
-      .skip(Math.max(0, req.query.page-1)*limit || 0)
+      .skip(Math.max(0, req.query.page - 1) * limit || 0)
       .exec(function(err, posts) {
         if (err) { res.statusCode(500); res.end(); }
         res.render('index', {
@@ -164,7 +165,7 @@ var setup = module.exports.setup = function(userConfig) {
 
   // VIEW POST SHORTHAND
   app.get('/p/:slug', function(req, res) {
-    var url = req.protocol+'://'+req.host+'/post/'+req.params.slug;
+    var url = req.protocol + '://' + req.host + '/post/' + req.params.slug;
     // This won't work if a port is needed
     res.redirect(301, url);
   });
@@ -189,7 +190,7 @@ var setup = module.exports.setup = function(userConfig) {
         if (err) { res.statusCode = 500; res.end(); }
         if (posts) {
           var post = posts[0];
-          res.render('tag', { title: '#'+req.params.tag, posts: posts, tag: req.params.tag });
+          res.render('tag', { title: '#' + req.params.tag, posts: posts, tag: req.params.tag });
         } else {
           res.statusCode = 404;
           res.end();
@@ -268,7 +269,11 @@ var setup = module.exports.setup = function(userConfig) {
       .where('published', true)
       .findOne( function(err, post) {
         if (err || !post) { res.statusCode = 404; res.end(); return; }
-        post.comments.push(req.body);
+        var comment = req.body;
+        post.comments.push(comment);
+
+        simpleEvents.emit('comment', comment);
+
         post.save( function(err, data) {
           if (err) {
             res.statusCode = 500;
@@ -299,9 +304,9 @@ var setup = module.exports.setup = function(userConfig) {
           var feed = new RSS({
             title: config.name,
             description: config.rss.description || '',
-            feed_url: baseUrl+'/rss.xml',
+            feed_url: baseUrl + '/rss.xml',
             site_url: baseUrl,
-            image_url: baseUrl+(config.rss.img || '/favicon.ico'),
+            image_url: baseUrl + (config.rss.img || '/favicon.ico'),
             author: config.rss.author || config.name
           });
 
@@ -310,7 +315,7 @@ var setup = module.exports.setup = function(userConfig) {
             feed.item({
               title:  post.title,
               description: post.body,
-              url: baseUrl+'/post/'+post.slug,
+              url: baseUrl + '/post/' + post.slug,
               date: post.date
             });
           }
@@ -325,7 +330,10 @@ var setup = module.exports.setup = function(userConfig) {
 module.exports.start = function() {
   if (!isSetup) { setup(); }
   http.createServer(app).listen(app.get('port'), function() {
-    console.log('Started '+config.name+' on port ' + app.get('port'));
-    console.log('Config used: ', config);
+    console.log('Started ' + config.name+' on port ' + app.get('port'));
+
+    simpleEvents.emit('start', { config: config });
   });
 };
+
+var simpleEvents = module.exports.events = new EventEmitter();

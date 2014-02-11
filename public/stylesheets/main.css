@@ -166,11 +166,9 @@ textarea {
 input[type="text"]:active,
 textarea:active,
 input[type="password"]:active,
-textarea:active,
 input[type="text"]:focus,
 textarea:focus,
-input[type="password"]:focus,
-textarea:focus {
+input[type="password"]:focus {
   border: 1px solid #aaa;
   outline: none;
 }

@@ -108,6 +108,17 @@ simple.app.get('/about', function(req, res) {
   res.render('about', { title: 'About' });
 });
 
+// Add event listeners. Options are 'comment', 'start'
+
+simple.events.on('comment', function(comment) {
+  console.log('COMMENT', comment)
+});
+
+simple.events.on('start', function(config) {
+  console.log('START', config);
+});
+
+
 // Start Simple Blog
 simple.start();
 ```
